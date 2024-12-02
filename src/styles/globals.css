@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap');
 
 :root {
   --background: #ffffff;
@@ -15,9 +15,8 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: "Noto Sans", serif;
+  font-family: "Noto Sans KR", serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-  font-variation-settings: "wdth" 100;
 }
