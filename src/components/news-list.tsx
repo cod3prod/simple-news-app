@@ -15,9 +15,14 @@ export default function NewsList() {
     <section>
       {isLoading && <p>Loading...</p>}
       {isError && <p>Error fetching data</p>}
+      {!isLoading && !isError && data.length === 0 && (
+        <p>데이터가 없습니다.</p>
+      )}
       <ul>
         {!isLoading &&
           !isError &&
+          data &&
+          data.length > 0 &&
           data.map((article, index) => (
             <NewsItem
               key={index}
