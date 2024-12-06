@@ -1,5 +1,9 @@
+import NewsList from "@/components/news-list";
+
 export default function Page() {
   return (
-    <div>Page</div>
-  )
+    <>
+      <NewsList />
+    </>
+  );
 }
