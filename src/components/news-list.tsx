@@ -1,20 +1,11 @@
 "use client";
 
-import { Article } from "@/types/news";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import NewsItem from "./news-item";
+import useFetch from "@/hooks/use-fetch";
 
 export default function NewsList() {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-  const endpoint = `${baseUrl}&apiKey=${apiKey}`;
-
-  async function fetchData() {
-    const res = await fetch(endpoint);
-    const data = await res.json();
-    setArticles(data.articles);
-  }
+  const { data, isLoading, isError, fetchData } = useFetch();
 
   useEffect(() => {
     fetchData();
@@ -22,14 +13,18 @@ export default function NewsList() {
 
   return (
     <section>
+      {isLoading && <p>Loading...</p>}
+      {isError && <p>Error fetching data</p>}
       <ul>
-        {articles.map((article, index) => (
-          <NewsItem
-            key={index}
-            title={article.title}
-            description={article.description ?? ""}
-          />
-        ))}
+        {!isLoading &&
+          !isError &&
+          data.map((article, index) => (
+            <NewsItem
+              key={index}
+              title={article.title}
+              description={article.description ?? ""}
+            />
+          ))}
       </ul>
     </section>
   );
