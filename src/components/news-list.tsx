@@ -3,31 +3,42 @@
 import { useEffect } from "react";
 import NewsItem from "./news-item";
 import useFetch from "@/hooks/use-fetch";
+import React from "react";
+import Loader from "./loader";
 
-export default function NewsList() {
+interface NewsListProps {
+  category: string;
+  searchQuery: string;
+  onSearch: boolean;
+}
+
+export default function NewsList({
+  category,
+  searchQuery,
+  onSearch,
+}: NewsListProps) {
   const { data, isLoading, isError, fetchData } = useFetch();
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(category, searchQuery);
+  }, [category, onSearch]);
 
   return (
     <section>
-      {isLoading && <p>Loading...</p>}
+      {isLoading && <Loader />}
       {isError && <p>Error fetching data</p>}
-      {!isLoading && !isError && data.length === 0 && (
-        <p>데이터가 없습니다.</p>
-      )}
+      {!isLoading && !isError && data.length === 0 && <p>데이터가 없습니다.</p>}
       <ul>
         {!isLoading &&
           !isError &&
           data &&
           data.length > 0 &&
-          data.map((article, index) => (
+          data.map((news, index) => (
             <NewsItem
               key={index}
-              title={article.title}
-              description={article.description ?? ""}
+              title={news.title}
+              link={news.link}
+              pubDate={news.pubDate}
             />
           ))}
       </ul>

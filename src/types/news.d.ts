@@ -1,21 +1,10 @@
-type ArticleSource = {
-  id: string | null;
-  name: string;
-};
-
-export type Article = {
-  source: ArticleSource;
-  author: string | null;
+export type News = {
   title: string;
-  description: string | null;
-  url: string;
-  urlToImage: string | null;
-  publishedAt: string;
-  content: string | null;
+  link: string;
+  pubDate: string;
 };
 
 export type NewsResponse = {
-  status: string;
-  totalResults: number;
-  articles: Article[];
+  title: string;
+  items: News[];
 };

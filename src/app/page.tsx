@@ -1,9 +1,9 @@
-import NewsList from "@/components/news-list";
+import NewsApp from "@/components/news-app";
 
 export default function Page() {
   return (
-    <main  className="container mx-auto max-w-4xl p-4">
-      <NewsList />
+    <main  className="grow container mx-auto max-w-4xl p-4">
+      <NewsApp />
     </main>
   );
 }

@@ -1,37 +1,41 @@
 "use client";
 
-import { Article, NewsResponse } from "@/types/news";
+import { News, NewsResponse } from "@/types/news";
 import { useState } from "react";
 
 export default function useFetch() {
-  const [data, setData] = useState<Article[]>([]);
+  const [data, setData] = useState<News[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
 
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const apiKey = process.env.NEXT_PUBLIC_API_KEY;
-  const endpoint = `${baseUrl}&apiKey=${apiKey}`;
 
-  const fetchData = async () => {
+  const fetchData = async (category?: string, searchQuery?: string) => {
     try {
       setIsLoading(true);
       setIsError(false);
-      
-      const res = await fetch(endpoint);
-      if (!res.ok) {
-        throw new Error('Network response was not ok');
+
+      let url = baseUrl;
+      if (searchQuery) {
+        url += `?q=${encodeURIComponent(searchQuery)}`;
+      } else if (category) {
+        url += `?category=${category}`;
       }
-      
-      const responseData = (await res.json()) as NewsResponse;
-      if (responseData?.articles && Array.isArray(responseData.articles)) {
-        setData(responseData.articles);
+      console.log(url);
+      const res = await fetch(url!);
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const responseData: NewsResponse = await res.json();
+      if (responseData?.items) {
+        setData(responseData.items);
       } else {
         setData([]);
       }
     } catch (error) {
       console.error(error);
       setIsError(true);
-      setData([]);
     } finally {
       setIsLoading(false);
     }
