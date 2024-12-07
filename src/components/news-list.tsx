@@ -9,19 +9,19 @@ import Loader from "./loader";
 interface NewsListProps {
   category: string;
   searchQuery: string;
-  onSearch: boolean;
+  searchTrigger: boolean;
 }
 
 export default function NewsList({
   category,
   searchQuery,
-  onSearch,
+  searchTrigger,
 }: NewsListProps) {
   const { data, isLoading, isError, fetchData } = useFetch();
 
   useEffect(() => {
     fetchData(category, searchQuery);
-  }, [category, onSearch]);
+  }, [category, searchTrigger]);
 
   return (
     <section>

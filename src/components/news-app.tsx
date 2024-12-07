@@ -1,12 +1,13 @@
 "use client";
 
 import NewsList from "./news-list";
-import { useState } from "react";
+import { useState, ChangeEvent } from "react";
 
 export default function NewsApp() {
   const [category, setCategory] = useState("headline");
+  const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
-  const [onSearch, setOnSearch] = useState(false);
+  const [searchTrigger, setSearchTrigger] = useState(false);
 
   const categories = [
     { id: "headline", name: "헤드라인" },
@@ -25,6 +26,7 @@ export default function NewsApp() {
     if (searchQuery.trim()) {
       setCategory("");
     }
+    setSearchTrigger((prev) => !prev);
   };
 
   const handleCategoryClick = (categoryId: string) => {
@@ -32,11 +34,14 @@ export default function NewsApp() {
     setSearchQuery("");
   };
 
-  const handleSearchChange = (event: React.FocusEvent<HTMLInputElement>) => {
-    if (event.target.value === "") {
-      setOnSearch(false);
-    } else {
-      setOnSearch(true);
+  const handleSearchInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+  };
+
+  const handleSearch = () => {
+    if (searchInput !== searchQuery) {
+      setSearchQuery(searchInput);
+      setSearchTrigger(prev => !prev);
     }
   };
 
@@ -45,9 +50,9 @@ export default function NewsApp() {
       <form onSubmit={handleSubmit} className="mb-4">
         <input
           type="text"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onBlur={handleSearchChange}
+          value={searchInput}
+          onChange={handleSearchInput}
+          onBlur={handleSearch}
           placeholder="뉴스 검색..."
           className="w-full p-2 border rounded-lg"
         />
@@ -68,7 +73,11 @@ export default function NewsApp() {
           </button>
         ))}
       </div>
-      <NewsList category={category} searchQuery={searchQuery} onSearch={onSearch} />
+      <NewsList
+        category={category}
+        searchQuery={searchQuery}
+        searchTrigger={searchTrigger}
+      />
     </>
   );
 }
