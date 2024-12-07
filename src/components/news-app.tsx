@@ -26,6 +26,7 @@ export default function NewsApp() {
     if (searchQuery.trim()) {
       setCategory("");
     }
+    setSearchQuery(searchInput);
     setSearchTrigger((prev) => !prev);
   };
 
